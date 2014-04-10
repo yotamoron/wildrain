@@ -8,5 +8,4 @@ import-utils==0.0.1
 iniparse==0.4
 ipython==0.12
 requests==1.1.0
-virtinst==0.600.4
 virtualenv==1.9.1
