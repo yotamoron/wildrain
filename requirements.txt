@@ -1,6 +1,5 @@
 Flask==0.9
 Flask-RESTful==0.2.11
-Flunym0us==2.0
 GitPython==0.3.2.RC1
 MySQL-python==1.2.3
 gitdb==0.5.4
