@@ -34,7 +34,7 @@ def allowed_file(filename):
 
 class UploadAicd(Resource):
     def post(self):
-        file = request.files['filedata']
+        file = request.files['aicd']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             addAicd(file)
