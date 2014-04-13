@@ -1,6 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    <head>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css" >
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script src="{{ url_for('static', filename='js/wildrain.js') }}"></script>
+        <script>
+            getApplications("aicd-links", "aicdJson");
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="page-header"><h2>WildRain</h2></div>
+            <div class="tabbable">
+                <ul class="nav nav-tabs" data-tabs="tabs">
+                    <li class="active"><a href="#aicds" data-toggle="tab">AICDs</a></li>
+                    <li><a href="#flows" data-toggle="tab">Flows</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="aicds" class="tab-pane active">
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <div class="span2">
+                                    Choose an AICD to upload: 
+                                </div>
+                                <div class="span8">
+                                    <input id="fileupload" type="file" name="aicd">
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="container-fluid">
+                                    <div class="span4" id="aicd-links">
+                                    </div>
+                                    <div class="span8" id="aicdJson">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="flows" class="tab-pane">
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="footer"></div>
+        </div>
+    </body>
+    
+<!-- head>
     <meta charset="utf-8">
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="{{ url_for('static', filename='app.js') }}"></script>
@@ -14,5 +65,5 @@
     </form>
 
     <p id="log"></p>
-</body>
+</body -->
 </html>
