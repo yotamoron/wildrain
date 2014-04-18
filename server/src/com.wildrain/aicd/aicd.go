@@ -24,5 +24,3 @@ type Aicd struct {
 	Commands        []ParametrizedEndpoint
 	Queries         []Query
 }
-
-
