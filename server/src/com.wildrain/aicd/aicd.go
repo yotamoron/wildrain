@@ -19,7 +19,7 @@ type Query struct {
 
 type Aicd struct {
 	ApplicationName string
-	Revision        string
+	Version         string
 	Events          []ParametrizedEndpoint
 	Commands        []ParametrizedEndpoint
 	Queries         []Query

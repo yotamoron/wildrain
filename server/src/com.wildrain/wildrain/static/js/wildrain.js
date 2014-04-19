@@ -4,7 +4,7 @@ var aicdLinksId;
 var aicdJsonId;
 
 function ajax(options) {
-    var ws = new WebSocket("ws://" + document.domain + ":8000/" + options['url']);
+    var ws = new WebSocket("ws://" + document.domain + ":8080/" + options['url']);
     ws.onmessage = function(e) {
         options['handleMessage'](JSON.parse(e.data));
         ws.onclose = function() {};
