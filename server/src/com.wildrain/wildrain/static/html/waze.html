@@ -22,6 +22,7 @@
 				
 				$('#submit').click(function() {
 					var time = $('#time').val();
+					$('#time').val("")
 					ws.send(JSON.stringify({"body": {"minutes": time}}));
 				});
 			});

@@ -55,7 +55,7 @@ func listenForIncomigMessages() {
 		msgReqId := message.ReqId
 		// 0 is a special case
 		if msgReqId == 0 {
-			go NewFlow(fromApp.conn, &message)
+			go NewFlow(fromApp.conn.instance, &message)
 		} else {
 			fromFlow := pending[msgReqId]
 			delete(pending, msgReqId)

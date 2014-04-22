@@ -11,6 +11,6 @@ type RequestFromFlow struct {
 	inbox chan *interface{}
 }
 
-func NewFlow(conn *Connection, msg *Message) {
-	fmt.Println(conn, msg)
+func NewFlow(instance ApplicationInstance, msg *Message) {
+	fmt.Println(instance, msg)
 }
