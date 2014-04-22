@@ -53,7 +53,6 @@ func listenForIncomigMessages() {
 		var message Message
 		json.Unmarshal(fromApp.msg, &message)
 		msgReqId := message.ReqId
-		// 0 is a special case
 		if msgReqId == 0 {
 			go NewFlow(fromApp.conn.instance, &message)
 		} else {

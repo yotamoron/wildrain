@@ -6,8 +6,35 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
         <script src="../js/wildrain.js"></script>
+		<script src="../lib/codemirror.js"></script>
+		<link rel="stylesheet" href="../lib/codemirror.css">
+		<script src="../lib/javascript.js"></script>
         <script>
             getApplications("aicd-links", "aicdJson");
+			$(function() {
+				var editorElmt = document.getElementById("editor");
+				var codeMirror = CodeMirror.fromTextArea(editorElmt, {
+					value: "var bla = 'bla';",
+					mode: "javascript",
+					lineWrapping: true,
+					lineNumbers: true
+				});
+				$('#newFlowSubmit').click(function() {
+					var newFlowName = $('#newFlowName').val();
+					if (newFlowName != "") {
+						$('#flowName').html("<strong>" + newFlowName + "</strong");
+						$('#newFlowName').val("");
+						codeMirror.doc.setValue("");
+					}
+				});
+				/*
+				console.log(codeMirror);
+				$('#getContent').click(function() {
+					var content = codeMirror.doc.getValue();
+					console.log(content);
+				});
+				*/
+			});
         </script>
     </head>
     <body>
@@ -41,8 +68,29 @@
                     </div>
                     <div id="flows" class="tab-pane">
                         <div class="container-fluid">
-                            <div class="row-fluid">
-                            </div>
+							<div class="span4">Flows editing links go here
+							</div>
+							<div class="span8">
+								<div class="container-fluid">
+									<div class="row-fluid">
+										<div class="span2">Flow name:</div>
+										<div class="span4"><input type="text" id="newFlowName"></div>
+										<div class="span6"><button type="button" id="newFlowSubmit">New Flow!</button></div>
+									</div>
+								</div>
+								<div class="container-fluid">
+									<div class="row-fluid">
+										<div id="flowName"></div>
+									</div>
+									<div class="row-fluid">
+										<button type="button" id="saveFlow">Save</button>
+										<br />
+									</div>
+									<div class="row-fluid">
+										<textarea id="editor"></textarea>
+									</div>
+								</div>
+							</div>
                         </div>
                     </div>
                 </div>
@@ -51,19 +99,4 @@
         </div>
     </body>
     
-<!-- head>
-    <meta charset="utf-8">
-    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
-</head>
-<body>
-    <p>Websocket with Flask, Gevent and Gevent-websocket</p>
-
-    <form id="chat_form" method="post">
-        <input type="text" name="text" />
-        <input type="submit" value="Send!" />
-    </form>
-
-    <p id="log"></p>
-</body -->
 </html>
