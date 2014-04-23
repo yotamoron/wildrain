@@ -11,10 +11,10 @@
 		<script src="../lib/javascript.js"></script>
         <script>
             getApplications("aicd-links", "aicdJson");
-			
+			var codeMirror;
 			$(function() {
 				var editorElmt = document.getElementById("editor");
-				var codeMirror = CodeMirror.fromTextArea(editorElmt, {
+				codeMirror = CodeMirror.fromTextArea(editorElmt, {
 					value: "var bla = 'bla';",
 					mode: "javascript",
 					lineWrapping: true,
@@ -28,13 +28,22 @@
 						codeMirror.doc.setValue("");
 					}
 				});
-				/*
-				console.log(codeMirror);
-				$('#getContent').click(function() {
-					var content = codeMirror.doc.getValue();
-					console.log(content);
+				
+				$('#saveFlow').click(function() {
+					var flow = codeMirror.doc.getValue();
+					var app = $('#appSelectDropdown').val();
+					var ver = $('#verSelectDropdown').val();
+					var event = $('#eventSelectDropdown').val();
+					$.ajax({
+						'url': '/saveFlow',
+						'type': 'POST',
+						'data': {'Flow': flow, 'ApplicationName': app, 'ApplicationVersion': ver, 'EventName': event},
+						'success': function(d, x, s) {
+							renderAppsSelectors();
+						}
+					});
+					
 				});
-				*/
 			});
         </script>
     </head>

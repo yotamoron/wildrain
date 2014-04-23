@@ -56,6 +56,10 @@ func connect(w http.ResponseWriter, r *http.Request) {
 	NewConnection(ws)
 }
 
+func saveFlow(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func main() {
 	LoadStatic()
 	go StartEngine()
@@ -63,5 +67,6 @@ func main() {
 	http.HandleFunc("/uploadAicd", uploadAicd)
 	http.HandleFunc("/getApplications", getApplications)
 	http.HandleFunc("/connect", connect)
+	http.HandleFunc("/saveFlow", saveFlow)
 	http.ListenAndServe(":8080", nil)
 }

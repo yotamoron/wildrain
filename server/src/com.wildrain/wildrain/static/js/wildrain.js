@@ -18,8 +18,12 @@ function ajax(options) {
         }
     }
 }
-
-function renderAppsSelectors(app, ver, event) {
+function renderAppsSelectors() {
+	_renderAppsSelectors("appSelect", "verSelect", "eventSelect");
+	codeMirror.doc.setValue("");
+}
+	
+function _renderAppsSelectors(app, ver, event) {
 	$('#' + app).html("");
 	$('#' + ver).html("");
 	$('#' + event).html("");
@@ -108,7 +112,7 @@ function _getApplications() {
         'url': 'getApplications',
         'handleMessage': function(d) {
             renderAicd(d);
-			renderAppsSelectors("appSelect", "verSelect", "eventSelect");
+			renderAppsSelectors();
         }
     });
 }
