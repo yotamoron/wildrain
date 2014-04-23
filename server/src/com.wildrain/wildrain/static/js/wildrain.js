@@ -19,6 +19,50 @@ function ajax(options) {
     }
 }
 
+function renderAppsSelectors(app, ver, event) {
+	$('#' + app).html("");
+	$('#' + ver).html("");
+	$('#' + event).html("");
+	var appSelect = '<select id="appSelectDropdown">';
+	$.each(applications, function(key, value) {
+		appSelect += '<option value="' + key + '">' + key + '</option>';
+	});
+	appSelect += "</select>"
+	$('#' + app).html(appSelect);
+	$('#appSelectDropdown').prop("selectedIndex", -1);
+	renderVersionsSelectors(ver, event);
+}
+
+function renderVersionsSelectors(ver, event) {
+	$('#appSelectDropdown').change(function(e) {
+		var app = $('#appSelectDropdown').val();
+		var verSelect = '<select id="verSelectDropdown">';
+		$.each(applications[app], function(k, v) {
+			verSelect += '<option value="' + k + '">' + k + '</option>';
+		});
+		verSelect += "</select>"
+		$('#' + ver).html(verSelect);
+		$('#verSelectDropdown').prop("selectedIndex", -1);
+		renderEventsSelectors(event);
+	});
+
+}
+
+function renderEventsSelectors(event) {
+	$('#verSelectDropdown').change(function(e) {
+		var app = $('#appSelectDropdown').val();
+		var ver = $('#verSelectDropdown').val();
+		var eventSelect = '<select id="eventSelectDropdown">';
+		$.each(applications[app][ver]['Events'], function(k, v) {
+			var eventName = v['Name'];
+			eventSelect += '<option value="' + eventName + '">' + eventName + '</option>';
+		});
+		eventSelect += "</select>"
+		$('#' + event).html(eventSelect);
+		$('#eventSelectDropdown').prop("selectedIndex", -1);
+	});
+}
+
 function handleFileSelect(evt) {
     var files = evt.target.files;
 
@@ -64,6 +108,7 @@ function _getApplications() {
         'url': 'getApplications',
         'handleMessage': function(d) {
             renderAicd(d);
+			renderAppsSelectors("appSelect", "verSelect", "eventSelect");
         }
     });
 }

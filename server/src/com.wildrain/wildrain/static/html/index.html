@@ -11,6 +11,7 @@
 		<script src="../lib/javascript.js"></script>
         <script>
             getApplications("aicd-links", "aicdJson");
+			
 			$(function() {
 				var editorElmt = document.getElementById("editor");
 				var codeMirror = CodeMirror.fromTextArea(editorElmt, {
@@ -73,9 +74,13 @@
 							<div class="span8">
 								<div class="container-fluid">
 									<div class="row-fluid">
-										<div class="span2">Flow name:</div>
+										<div class="span4"><div id="appSelect"></div></div>
+										<div class="span4"><div id="verSelect"></div></div>
+										<div class="span4"><div id="eventSelect"></div></div>
+									</div>
+									<div class="row-fluid">
 										<div class="span4"><input type="text" id="newFlowName"></div>
-										<div class="span6"><button type="button" id="newFlowSubmit">New Flow!</button></div>
+										<div class="span2"><button type="button" id="newFlowSubmit">New Flow!</button></div>
 									</div>
 								</div>
 								<div class="container-fluid">
