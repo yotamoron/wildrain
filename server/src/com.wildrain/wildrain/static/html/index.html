@@ -21,12 +21,7 @@
 					lineNumbers: true
 				});
 				$('#newFlowSubmit').click(function() {
-					var newFlowName = $('#newFlowName').val();
-					if (newFlowName != "") {
-						$('#flowName').html("<strong>" + newFlowName + "</strong");
-						$('#newFlowName').val("");
-						codeMirror.doc.setValue("");
-					}
+					codeMirror.doc.setValue("");
 				});
 				
 				$('#saveFlow').click(function() {
@@ -34,15 +29,18 @@
 					var app = $('#appSelectDropdown').val();
 					var ver = $('#verSelectDropdown').val();
 					var event = $('#eventSelectDropdown').val();
+					var flowName = $('#newFlowName').val()
+					renderAppsSelectors();
+					$('#newFlowName').val("");
 					$.ajax({
-						'url': '/saveFlow',
-						'type': 'POST',
-						'data': {'Flow': flow, 'ApplicationName': app, 'ApplicationVersion': ver, 'EventName': event},
-						'success': function(d, x, s) {
-							renderAppsSelectors();
-						}
+						url: '/saveFlow',
+						type: 'POST',
+						data: JSON.stringify({'FlowName': flowName, 'Flow': flow, 'ApplicationName': app, 'ApplicationVersion': ver, 'EventName': event}),
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						success: function(d) { },
+						failure: function(d) { }
 					});
-					
 				});
 			});
         </script>
@@ -93,9 +91,6 @@
 									</div>
 								</div>
 								<div class="container-fluid">
-									<div class="row-fluid">
-										<div id="flowName"></div>
-									</div>
 									<div class="row-fluid">
 										<button type="button" id="saveFlow">Save</button>
 										<br />

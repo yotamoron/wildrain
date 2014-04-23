@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/GeertJohan/go.rice"
 	"github.com/gorilla/websocket"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -57,7 +58,8 @@ func connect(w http.ResponseWriter, r *http.Request) {
 }
 
 func saveFlow(w http.ResponseWriter, r *http.Request) {
-
+	body, _ := ioutil.ReadAll(r.Body)
+	SaveFlow(body)
 }
 
 func main() {
