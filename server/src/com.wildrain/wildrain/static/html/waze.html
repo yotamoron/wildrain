@@ -23,7 +23,7 @@
 				$('#submit').click(function() {
 					var time = $('#time').val();
 					$('#time').val("")
-					ws.send(JSON.stringify({"body": {"minutes": time}}));
+					ws.send(JSON.stringify({"body": {"Event": "TIME_TO_HOME", "Params": {"minutes": time}}}));
 				});
 			});
         </script>

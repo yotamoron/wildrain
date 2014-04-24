@@ -13,6 +13,14 @@ type RequestFromFlow struct {
 	inbox chan *interface{}
 }
 
+type trigger struct {
+	Event  string
+	Params map[string]interface{}
+}
+
 func NewFlow(instance ApplicationInstance, msg *Message) {
-	fmt.Println(instance, msg)
+	incoming := msg.Body.(map[string]interface{})
+	newTrigger := trigger{Event: incoming["Event"].(string), Params: incoming["Params"].(map[string]interface{})}
+	flow := GetFlow(instance.ApplicationName, instance.ApplicationVersion, newTrigger.Event)
+	fmt.Println(flow)
 }
