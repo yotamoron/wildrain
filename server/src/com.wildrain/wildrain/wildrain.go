@@ -57,6 +57,17 @@ func connect(w http.ResponseWriter, r *http.Request) {
 	NewConnection(ws)
 }
 
+func getFlows(w http.ResponseWriter, r *http.Request) {
+	ws := upgrade(w, r)
+	if ws == nil {
+		return
+	}
+	defer func() { ws.Close() }()
+	flows := GetFlows()
+	arr, _ := json.Marshal(flows)
+	ws.WriteMessage(websocket.TextMessage, arr)
+}
+
 func saveFlow(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 	SaveFlow(body)
@@ -64,11 +75,13 @@ func saveFlow(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	LoadStatic()
+	StoreStaticFlow()
 	go StartEngine()
 	http.Handle("/", http.FileServer(rice.MustFindBox("static").HTTPBox()))
 	http.HandleFunc("/uploadAicd", uploadAicd)
 	http.HandleFunc("/getApplications", getApplications)
 	http.HandleFunc("/connect", connect)
 	http.HandleFunc("/saveFlow", saveFlow)
+	http.HandleFunc("/getFlows", getFlows)
 	http.ListenAndServe(":8080", nil)
 }

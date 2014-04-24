@@ -11,6 +11,7 @@
 		<script src="../lib/javascript.js"></script>
         <script>
             getApplications("aicd-links", "aicdJson");
+			getFlows();
 			var codeMirror;
 			$(function() {
 				var editorElmt = document.getElementById("editor");
@@ -38,8 +39,9 @@
 						data: JSON.stringify({'FlowName': flowName, 'Flow': flow, 'ApplicationName': app, 'ApplicationVersion': ver, 'EventName': event}),
 						contentType: "application/json; charset=utf-8",
 						dataType: "json",
-						success: function(d) { },
-						failure: function(d) { }
+						success: function(d, s, x) { getFlows();},
+						error: function(x, s, e) { getFlows();},
+						complete: function(x, s) { getFlows();}
 					});
 				});
 			});
@@ -76,7 +78,7 @@
                     </div>
                     <div id="flows" class="tab-pane">
                         <div class="container-fluid">
-							<div class="span4">Flows editing links go here
+							<div class="span4" id="flowsLinks">
 							</div>
 							<div class="span8">
 								<div class="container-fluid">

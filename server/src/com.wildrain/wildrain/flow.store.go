@@ -29,6 +29,12 @@ func GetFlow(applicationName string, applicationVersion string, eventName string
 	}
 	return nil
 }
+
+func StoreStaticFlow() {
+	flow := []byte(`{"Flow": "this is a static flow", "FlowName": "static flow","ApplicationName": "Waze", "ApplicationVersion": "1.0", "EventName": "TIME_TO_HOME"}`)
+	SaveFlow(flow)
+}
+
 func SaveFlow(body []byte) {
 	var f savedFlow
 	json.Unmarshal(body, &f)

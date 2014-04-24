@@ -18,6 +18,77 @@ function ajax(options) {
         }
     }
 }
+
+var flowsMapping;
+
+function loadFlow(flowId) {
+	var flow = flowsMapping[flowId];
+	$('#appSelectDropdown option').filter(function() {
+		return $(this).text() == flow[0]
+	}).prop('selected', true);
+	
+	var app = flow[0];
+	var verSelect = '<select id="verSelectDropdown">';
+	$.each(applications[app], function(k, v) {
+		verSelect += '<option value="' + k + '">' + k + '</option>';
+	});
+	verSelect += "</select>"
+	$('#verSelect').html(verSelect);
+	$('#verSelectDropdown option').filter(function() {
+		return $(this).text() == flow[1]
+	}).prop('selected', true);
+	
+	var ver = flow[1];
+	var eventSelect = '<select id="eventSelectDropdown">';
+	$.each(applications[app][ver]['Events'], function(k, v) {
+		var eventName = v['Name'];
+		eventSelect += '<option value="' + eventName + '">' + eventName + '</option>';
+	});
+	eventSelect += "</select>"
+	$('#eventSelect').html(eventSelect);
+	$('#eventSelect option').filter(function() {
+		return $(this).text() == flow[2]
+	}).prop('selected', true);
+	
+	$('#newFlowName').val(flow[3]);
+	codeMirror.doc.setValue(flow[4]);
+}
+
+function renderFlows(d, el) {
+	flowsMapping = {};
+	var flowId = 0;
+	var html = "<ul>";
+	$.each(d, function(app, versions) {
+		html += "<li>" + app;
+		$.each(versions, function(version, events) {
+			html += "<ul><li>" + version;
+			$.each(events, function(event, flows) {
+				html += "<ul><li>" + event + "<ul>";
+				$.each(flows, function(flowName, flowValue) {
+					html += "<li><button type='button' onclick='loadFlow(" + flowId + ")'>" + flowName + "</button></li>";
+					flowsMapping[flowId] = [app, version, event, flowName, flowValue];
+					flowId += 1;
+				});
+				html += "</ul></li></ul>";
+			});
+			html += "</li></ul>";
+		});
+		html += "</li></ul>";
+	});
+	html += "</ul>";
+	$('#' + el).html(html);
+}
+
+function getFlows() {
+	ajax({
+		'url': 'getFlows',
+		'handleMessage': function(d) { 
+			renderFlows(d, 'flowsLinks');
+		}
+	});	
+}
+
+
 function renderAppsSelectors() {
 	_renderAppsSelectors("appSelect", "verSelect", "eventSelect");
 	codeMirror.doc.setValue("");
