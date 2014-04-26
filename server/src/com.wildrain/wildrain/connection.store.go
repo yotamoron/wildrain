@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type getConnection struct {
 	instance ApplicationInstance
 	inbox    chan *Connection
@@ -11,13 +13,15 @@ var getConnectionChan = make(chan getConnection)
 
 func ConnectionStore() {
 	connectionMap := make(map[ApplicationInstance]*Connection)
-	select {
-	case c := <-StoreConnection:
-		connectionMap[c.instance] = c
-	case g := <-getConnectionChan:
-		instance := g.instance
-		conn := connectionMap[instance]
-		g.inbox <- conn
+	for {
+		select {
+		case c := <-StoreConnection:
+			connectionMap[c.instance] = c
+		case g := <-getConnectionChan:
+			instance := g.instance
+			conn := connectionMap[instance]
+			g.inbox <- conn
+		}
 	}
 }
 

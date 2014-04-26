@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css" >
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <script>
+			var state = 'off';
+			var temp = 25;
+			$(function() {
+	            var ws = new WebSocket("ws://" + document.domain + ":8080/connect");
+	    		ws.onmessage = function(e) {
+					console.log("Message");
+	    		}
+
+				ws.onclose = function() {
+					console.log("Close");
+				}
+			
+	    		ws.onopen = function() {
+					ws.send(JSON.stringify({"applicationName": "Boiler", "applicationVersion": "1.0"}));
+	    		}
+				$('#state').html(state);
+				$('#temp').html(temp);
+			});
+        </script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="page-header"><h2>Boiler 1.0</h2></div>
+			<div class="row-fluid">
+				<div class="span2">State: </div>
+				<div class="span3"><div id="state" /></div>
+			</div>
+			<div class="row-fluid">
+				<div class="span2">Temprature: </div>
+				<div class="span3"><div id="temp" /></div>
+			</div>
+            <div id="footer"></div>
+        </div>
+    </body>
+</html>

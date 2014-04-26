@@ -48,27 +48,29 @@ func authenticate(ws *websocket.Conn) (*ApplicationInstance, *aicd.Aicd, error) 
 func listenForIncomigMessages() {
 	currentReqId := 1
 	pending := make(map[int]*RequestFromFlow)
-	select {
-	case fromApp := <-IncomingMessagesFromApps:
-		var message Message
-		json.Unmarshal(fromApp.msg, &message)
-		msgReqId := message.ReqId
-		if msgReqId == 0 {
-			go NewFlow(fromApp.conn.instance, &message)
-		} else {
-			fromFlow := pending[msgReqId]
-			delete(pending, msgReqId)
-			fromFlow.inbox <- &message.Body
+	for {
+		select {
+		case fromApp := <-IncomingMessagesFromApps:
+			var message Message
+			json.Unmarshal(fromApp.msg, &message)
+			msgReqId := message.ReqId
+			if msgReqId == 0 {
+				go NewFlow(fromApp.conn.instance, &message)
+			} else {
+				fromFlow := pending[msgReqId]
+				delete(pending, msgReqId)
+				fromFlow.inbox <- &message.Body
+			}
+		case fromFlow := <-IncomingRequestFromFlow:
+			instance := fromFlow.instance
+			body := fromFlow.body
+			conn := GetConnection(&instance)
+			req := Message{ReqId: currentReqId, Body: body}
+			jsonRequest, _ := json.Marshal(req)
+			conn.send <- jsonRequest
+			pending[currentReqId] = fromFlow
+			currentReqId += 1
 		}
-	case fromFlow := <-IncomingRequestFromFlow:
-		instance := fromFlow.instance
-		body := fromFlow.body
-		conn := GetConnection(&instance)
-		req := Message{ReqId: currentReqId, Body: body}
-		jsonRequest, _ := json.Marshal(req)
-		conn.send <- jsonRequest
-		pending[currentReqId] = fromFlow
-		currentReqId += 1
 	}
 }
 

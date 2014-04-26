@@ -15,6 +15,44 @@ func LoadStatic() {
 	var waze aicd.Aicd
 	json.Unmarshal(staticWaze, &waze)
 	setAicd(&waze)
+	var boiler aicd.Aicd
+	boiler.ApplicationName = `Boiler`
+	boiler.Version = `1.0`
+	boiler.Queries = []aicd.Query{
+		aicd.Query{
+			Name: `CURRENT_TEMPRATURE`,
+			Return: []aicd.Param{
+				aicd.Param{
+					ParamName: `temprature`,
+					ParamType: `int`,
+					Required:  true,
+				},
+			},
+		},
+		aicd.Query{
+			Name: `GET_STATE`,
+			Return: []aicd.Param{
+				aicd.Param{
+					ParamName: `state`,
+					ParamType: `string`, // can be 'on' of 'off'
+					Required:  true,
+				},
+			},
+		},
+	}
+	boiler.Commands = []aicd.ParametrizedEndpoint{
+		aicd.ParametrizedEndpoint{
+			Name: `SET_STATE`,
+			Params: []aicd.Param{
+				aicd.Param{
+					ParamName: `state`, // can be 'on' or 'off'
+					ParamType: `string`,
+					Required:  true,
+				},
+			},
+		},
+	}
+	setAicd(&boiler)
 }
 
 func GetAicds() *map[string]map[string]aicd.Aicd {
