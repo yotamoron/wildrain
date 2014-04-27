@@ -33,13 +33,12 @@ func GetFlow(applicationName string, applicationVersion string, eventName string
 func StoreStaticFlow() {
 	var staticFlow savedFlow
 	staticFlow.Flow = `
-	if (TRIGGER['Params']['minutes'] < 30) {
-		var res = sendCommand({"ApplicationName": "Boiler", "ApplicationVersion": "1.0"}, {"Name": "SET_STATE", "Params": ["on"]});
-		printOut(res);
-	} else {
-		printOut("Still some time till home :-)");
-	}
-	`
+if (TRIGGER['Params']['minutes'] < 30) {
+	var res = sendCommand({"ApplicationName": "Boiler", "ApplicationVersion": "1.0"}, {"Name": "SET_STATE", "Params": { "state" :"on"}});
+} else {
+	printOut("Still some time till home :-)");
+}
+`
 	staticFlow.FlowName = `Turn on the boiler when 30 minutes away from home`
 	staticFlow.ApplicationName = `Waze`
 	staticFlow.ApplicationVersion = `1.0`

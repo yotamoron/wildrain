@@ -6,12 +6,34 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
         <script>
-			var state = 'off';
-			var temp = 25;
+			function handleCommand(cmd) {
+				if (cmd['Name'] == "SET_STATE") {
+					$('#state').html(cmd['Params']['state'])
+				}
+				return {"success": true}
+			}
+			
+			function handleQuery(q) {
+				if (q['Name'] == "GET_STATE") {
+					return {"state" : $('#state').html()};
+				} else if (q['Name'] == "CURRENT_TEMPRATURE") {
+					return {"temprature": $('#temp').html()}
+				}
+			}
+			
+			function handleMessage(sck, msg) {
+				var data = JSON.parse(msg['data']);
+				var reqId = data['ReqId'];
+				var reqBody = data['Body'];
+				var type = reqBody['Type'];
+				var res = type == "COMMAND" ? handleCommand(reqBody['Body']) : handleQuery(reqBody['Body']);
+				sck.send(JSON.stringify({"ReqId": reqId, "Body": res}));
+				
+			}
 			$(function() {
 	            var ws = new WebSocket("ws://" + document.domain + ":8080/connect");
 	    		ws.onmessage = function(e) {
-					console.log("Message");
+					handleMessage(ws, e);
 	    		}
 
 				ws.onclose = function() {
@@ -21,8 +43,8 @@
 	    		ws.onopen = function() {
 					ws.send(JSON.stringify({"applicationName": "Boiler", "applicationVersion": "1.0"}));
 	    		}
-				$('#state').html(state);
-				$('#temp').html(temp);
+				$('#state').html('off');
+				$('#temp').html(25);
 			});
         </script>
     </head>

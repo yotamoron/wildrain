@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type getConnection struct {
 	instance ApplicationInstance
 	inbox    chan *Connection
