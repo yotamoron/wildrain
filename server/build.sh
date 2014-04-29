@@ -1,10 +1,13 @@
 #!/bin/bash
 
+echo "Cleaning"
+rm ./wildrain
+
+echo "Building"
+go build com.wildrain/wildrain
+
 echo "Ricing."
-rice -i ./src/com.wildrain/wildrain embed
+rice -i com.wildrain/wildrain append  --exec wildrain
 
-echo "Installing"
-go install com.wildrain/wildrain
-
-echo "Starting server"
-wildrain
+echo "Running"
+./wildrain

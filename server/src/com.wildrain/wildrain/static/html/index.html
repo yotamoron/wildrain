@@ -6,6 +6,85 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
         <script src="../js/wildrain.js"></script>
+		<script src="../js/blockly_compressed.js"></script>
+		<script src="../js/blocks_compressed.js"></script>
+		<script src="../js/en.js"></script>
+		<xml id="toolbox" style="display: none">
+			<category name="Colour">
+				<block type="colour_blend"></block>
+				<block type="colour_picker"></block>
+				<block type="colour_random"></block>
+				<block type="colour_rgb"></block>
+			</category>
+			<category name="Loops">
+				<block type="controls_repeat"></block>
+				<block type="controls_repeat_ext"></block>
+				<block type="controls_whileUntil"></block>
+				<block type="controls_flow_statements"></block>
+				<block type="controls_for"></block>
+				<block type="controls_forEach"></block>
+				<block type="loops"></block>
+			</category>
+			<category name="Conditionals">
+				<block type="controls_if"></block>
+				<block type="controls_if_else"></block>
+				<block type="controls_if_elseif"></block>
+				<block type="controls_if_if"></block>
+			</category>
+			<category name="Lists">
+				<block type="lists_create_empty"></block>
+				<block type="lists_create_with"></block>
+				<block type="lists_create_with_container"></block>
+				<block type="lists_create_with_item"></block>
+				<block type="lists_getIndex"></block>
+				<block type="lists_getSublist"></block>
+				<block type="lists_indexOf"></block>
+				<block type="lists_isEmpty"></block>
+				<block type="lists_length"></block>
+				<block type="lists_repeat"></block>
+				<block type="lists_setIndex"></block>
+			</category>
+			<category name="Logic">
+				<block type="logic_boolean"></block>
+				<block type="logic_compare"></block>
+				<block type="logic_negate"></block>
+				<block type="logic_null"></block>
+				<block type="logic_operation"></block>
+				<block type="logic_ternary"></block>
+			</category>
+			<category name="Math">
+				<block type="math_arithmetic"></block>
+				<block type="math_change"></block>
+				<block type="math_constant"></block>
+				<block type="math_constrain"></block>
+				<block type="math_modulo"></block>
+				<block type="math_number"></block>
+				<block type="math_number_property"></block>
+				<block type="math_on_list"></block>
+				<block type="math_random_float"></block>
+				<block type="math_random_int"></block>
+				<block type="math_round"></block>
+				<block type="math_single"></block>
+				<block type="math_trig"></block>
+			</category>
+			<category name="Text">
+				<block type="text_append"></block>
+				<block type="text_changeCase"></block>
+				<block type="text_charAt"></block>
+				<block type="text_create_join_container"></block>
+				<block type="text_create_join_item"></block>
+				<block type="text_getSubstring"></block>
+				<block type="text_indexOf"></block>
+				<block type="text_isEmpty"></block>
+				<block type="text_join"></block>
+				<block type="text_length"></block>
+				<block type="text_print"></block>
+				<block type="text_prompt"></block>
+				<block type="text_trim"></block>
+			</category>
+			<category name="Variables" custom="VARIABLE"></category>
+  			<category name="Functions" custom="PROCEDURE"></category>
+  		</xml>
 		<script src="../lib/codemirror.js"></script>
 		<link rel="stylesheet" href="../lib/codemirror.css">
 		<script src="../lib/javascript.js"></script>
@@ -24,7 +103,6 @@
 				$('#newFlowSubmit').click(function() {
 					codeMirror.doc.setValue("");
 				});
-				
 				$('#saveFlow').click(function() {
 					var flow = codeMirror.doc.getValue();
 					var app = $('#appSelectDropdown').val();
@@ -44,6 +122,8 @@
 						complete: function(x, s) { getFlows();}
 					});
 				});
+				Blockly.inject(document.getElementById('blocklyHolder'),
+        	{path: './', toolbox: document.getElementById('toolbox')});
 			});
         </script>
     </head>
@@ -52,11 +132,12 @@
             <div class="page-header"><h2>WildRain</h2></div>
             <div class="tabbable">
                 <ul class="nav nav-tabs" data-tabs="tabs">
-                    <li class="active"><a href="#aicds" data-toggle="tab">AICDs</a></li>
+                    <li><a href="#aicds" data-toggle="tab">AICDs</a></li>
                     <li><a href="#flows" data-toggle="tab">Flows</a></li>
+					<li class="active"><a href="#blockly" data-toggle="tab">Blockly</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div id="aicds" class="tab-pane active">
+                    <div id="aicds" class="tab-pane">
                         <div class="container-fluid">
                             <div class="row-fluid">
                                 <div class="span2">
@@ -104,7 +185,10 @@
 							</div>
                         </div>
                     </div>
-                </div>
+					<div id="blockly" class="tab-pane active">
+						<div id="blocklyHolder"></div>
+					</div>                
+				</div>
             </div>
             <div id="footer"></div>
         </div>
