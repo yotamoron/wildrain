@@ -23,7 +23,6 @@
 				<block type="controls_flow_statements"></block>
 				<block type="controls_for"></block>
 				<block type="controls_forEach"></block>
-				<block type="loops"></block>
 			</category>
 			<category name="Conditionals">
 				<block type="controls_if"></block>
@@ -86,6 +85,7 @@
   			<category name="Functions" custom="PROCEDURE"></category>
   		</xml>
 		<script src="../lib/codemirror.js"></script>
+		<script type="text/javascript" src="../js/javascript_compressed.js"></script>
 		<link rel="stylesheet" href="../lib/codemirror.css">
 		<script src="../lib/javascript.js"></script>
         <script>
@@ -123,7 +123,15 @@
 					});
 				});
 				Blockly.inject(document.getElementById('blocklyHolder'),
-        	{path: './', toolbox: document.getElementById('toolbox')});
+        			{
+						path: './', 
+						toolbox: document.getElementById('toolbox')
+					});
+					function myUpdateFunction() {
+    					var code = Blockly.JavaScript.workspaceToCode();
+    					document.getElementById('generatedCode').value = code;
+  					}
+  					Blockly.addChangeListener(myUpdateFunction);
 			});
         </script>
     </head>
@@ -135,6 +143,7 @@
                     <li><a href="#aicds" data-toggle="tab">AICDs</a></li>
                     <li><a href="#flows" data-toggle="tab">Flows</a></li>
 					<li class="active"><a href="#blockly" data-toggle="tab">Blockly</a></li>
+					<li><a href="#generated" data-toggle="tab">Generated Code</a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="aicds" class="tab-pane">
@@ -188,7 +197,10 @@
 					<div id="blockly" class="tab-pane active">
 						<div id="blocklyHolder"></div>
 					</div>                
-				</div>
+					<div id="generated" class="tab-pane">
+						<textarea id="generatedCode" style="resize: none; width: 600px; height: 500px;" readonly>
+					</div>
+					</div>
             </div>
             <div id="footer"></div>
         </div>
